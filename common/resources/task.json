@@ -1,0 +1,10 @@
+{
+  "id": string,
+  "title": string,
+  "updated": datetime,
+  "notes": [noteList],
+  "status": string,
+  "due": datetime,
+  "completed": datetime,
+  "deleted": boolean
+}

@@ -1,0 +1,6 @@
+{
+  "id": string,
+  "title": string,
+  "text": string,
+  "updated": datetime
+}

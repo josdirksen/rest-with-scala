@@ -1,0 +1,7 @@
+{
+  "id": string,
+  "title": string,
+  "tasks": [task],
+  "members": [person],
+  "updated": datetime
+}

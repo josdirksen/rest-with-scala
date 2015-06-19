@@ -9,7 +9,6 @@ object DependenciesCommon {
     "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/")
 }
 
-
 object DependenciesChapter1 {
   lazy val http4sVersion = "0.7.0"
 
@@ -23,7 +22,14 @@ object DependenciesChapter1 {
 
 object DependenciesChapter2 {
   lazy val finchVersion = "0.7.0"
-  val backendDeps = Seq( "com.github.finagle" %% "finch-core" % finchVersion)
+  val backendDeps = Seq(
+    "com.github.finagle" %% "finch-core" % finchVersion,
+    "com.github.finagle" %% "finch-argonaut" % finchVersion
+  )
+
+
   val resolvers =
     Seq("Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
+
+
 }

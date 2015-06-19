@@ -19,6 +19,9 @@ lazy val runCH01EchoServer = taskKey[Unit]("Run chapter 1 - EchoServer")
 lazy val runCH02HelloFinch = taskKey[Unit]("Run chapter 2 - Finch HelloWorld")
 lazy val runCH02FinchRouters = taskKey[Unit]("Run chapter 2 - Finch HelloWorld")
 lazy val runCH02Step1 = taskKey[Unit]("Run chapter 2 - Step1")
+lazy val runCH02Step2 = taskKey[Unit]("Run chapter 2 - Step2")
+lazy val runCH02Step3 = taskKey[Unit]("Run chapter 2 - Step3")
+lazy val runCH02Step4 = taskKey[Unit]("Run chapter 2 - Step4")
 
 addCommandAlias("runCH01-HelloWorld", "; chapter01/runCH01HelloWorld")
 
@@ -29,6 +32,12 @@ addCommandAlias("runCH02-HelloFinch", "; chapter02/runCH02HelloFinch")
 addCommandAlias("runCH02-FinchRouters", "; chapter02/runCH02FinchRouters")
 
 addCommandAlias("runCH02-runCH02Step1", "; chapter02/runCH02Step1")
+
+addCommandAlias("runCH02-runCH02Step2", "; chapter02/runCH02Step2")
+
+addCommandAlias("runCH02-runCH02Step3", "; chapter02/runCH02Step3")
+
+addCommandAlias("runCH02-runCH02Step4", "; chapter02/runCH02Step4")
 
 lazy val chapter01 = (project in file ("chapter-01"))
   .dependsOn(common)
@@ -48,7 +57,10 @@ lazy val chapter02 = (project in file ("chapter-02"))
     libraryDependencies := DependenciesChapter2.backendDeps,
     fullRunTask(runCH02HelloFinch, Compile, "org.restwithscala.chapter2.gettingstarted.HelloFinch"),
     fullRunTask(runCH02FinchRouters, Compile, "org.restwithscala.chapter2.routes.FinchRoutes"),
-    fullRunTask(runCH02Step1, Compile, "org.restwithscala.chapter2.step1.FinchStep1"))
+    fullRunTask(runCH02Step1, Compile, "org.restwithscala.chapter2.steps.FinchStep1"),
+    fullRunTask(runCH02Step2, Compile, "org.restwithscala.chapter2.steps.FinchStep2"),
+    fullRunTask(runCH02Step3, Compile, "org.restwithscala.chapter2.steps.FinchStep3"),
+    fullRunTask(runCH02Step4, Compile, "org.restwithscala.chapter2.steps.FinchStep4"))
 
 //lazy val chapter03 = project in file ("chapter-03") dependsOn common
 //lazy val chapter04 = project in file ("chapter-04") dependsOn common

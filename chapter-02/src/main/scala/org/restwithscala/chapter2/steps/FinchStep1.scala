@@ -1,4 +1,4 @@
-package org.restwithscala.chapter2.step1
+package org.restwithscala.chapter2.steps
 
 import com.twitter.finagle.Httpx
 import io.finch.request._

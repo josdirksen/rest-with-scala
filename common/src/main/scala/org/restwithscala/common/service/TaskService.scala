@@ -23,10 +23,10 @@ object TaskService {
   def delete(id: Long): Future[Option[Task]] = Future { map.remove(id) }
   def select(id: Long): Future[Option[Task]] = Future { map.get(id) }
   def all: Future[List[Task]] = Future {map.values.toList}
-  def search(status: Option[String], containsText: Option[String]) : Future[List[Task]] = {
+  def search(status: String, containsText: Option[String]) : Future[List[Task]] = {
 
     Future {
-    map.filter {case(id, task) => status.map(_.equals(task.status.status)) getOrElse(true)}
+    map.filter {case(id, task) => status.equals(task.status.status)}
        .filter {case(id, task) => containsText.map(task.content.contains(_)) getOrElse(true)}
        .values.toList
     }
@@ -38,9 +38,9 @@ object TaskService {
     taskWithId
   }
 
-  def update(u: Task): Future[Option[Task]] = Future {
-    if (map.contains(u.id)) {
-      map.replace(u.id, u)
+  def update(id: Long, u: Task): Future[Option[Task]] = Future {
+    if (map.contains(id)) {
+      map.replace(id, u)
       Some(u)
     } else None
   }

@@ -64,7 +64,7 @@ object FinchStep3 extends App {
      * Reader converts the incoming request to a task. We combine
      * the various readers and return a task.
      */
-    def getRequestToTaskReader(id: Long): RequestReader[Task] = {
+    def getRequestToTaskReader: RequestReader[Task] = {
       body.as[Task]
     }
   }
@@ -72,22 +72,11 @@ object FinchStep3 extends App {
   /**
    * Create a new task. This class expects a httprequest, and returns a Future[String]
    */
-  case class CreateNewTask() extends Service[Request, HttpResponse] with BaseTask {
+  case class CreateNewTask() extends Service[Request, HttpResponse] {
 
-    /**
-     * Called when a request is received. Tbis function should return:
-     * An HttpResponse
-     *
-     * - A value of a type with an EncodeResponse instance
-     * - A Future of HttpResponse
-     * - A Future of a value of a type with an EncodeResponse instance
-     * - A RequestReader that returns a value of a type with an EncodeResponse instance
-     * - A Finagle service that returns an HttpResponse
-     * - A Finagle service that returns a value of a type with an EncodeResponse instance
-     */
     def apply(req: Request): Future[HttpResponse] = {
       for {
-        task <- getRequestToTaskReader(-1)(req)
+        task <- body.as[Task].apply(req)
         stored <- TaskService.insert(task)
       } yield Ok(stored)
     }
@@ -120,8 +109,8 @@ object FinchStep3 extends App {
   case class UpdateTask(taskId: Long) extends Service[Request, HttpResponse] with BaseTask {
     def apply(req: Request): Future[HttpResponse] =
       for {
-        task <- getRequestToTaskReader(taskId)(req)
-        stored <- TaskService.update(task)
+        task <- getRequestToTaskReader(req)
+        stored <- TaskService.update(taskId, task)
       } yield stored match {
         case Some(task) => Ok(task.toString)
         case None => NotFound()

@@ -32,6 +32,8 @@ import io.finch.{Endpoint => _}
  */
 object FinchStep1 extends App {
 
+  val matchPath : Matcher = "hello"
+
   // handle a single post using a RequestReader
   val taskCreateAPI = Post / "tasks" /> (
     for {

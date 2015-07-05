@@ -10,4 +10,4 @@ case class Project(id: Long, name: String, tasks: List[Task], members: List[Pers
 
 case class Person(name: String)
 
-case class SearchParams(status: Option[String], text: Option[String])
+case class SearchParams(status: String, text: Option[String])

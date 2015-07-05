@@ -26,8 +26,6 @@ package object chapter2 {
     promise
   }
 
-//  case class Note(id: Long, content: String)
-
   implicit def personDecoding: DecodeJson[Person] =
     jdecode1L(Person.apply)("name")
 

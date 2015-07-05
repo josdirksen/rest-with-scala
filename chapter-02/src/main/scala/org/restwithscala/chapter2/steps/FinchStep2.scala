@@ -126,7 +126,7 @@ object FinchStep2 extends App {
     def apply(req: Request): Future[HttpResponse] =
       for {
         task <- getRequestToTaskReader(taskId)(req)
-        stored <- TaskService.update(task)
+        stored <- TaskService.update(taskId, task)
       } yield stored match {
         case Some(task) => Ok(task.toString)
         case None => NotFound()

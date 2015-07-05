@@ -1,11 +1,13 @@
 package org.restwithscala.chapter2.steps
 
+import _root_.argonaut.Json
 import com.twitter.finagle.httpx.Request
 import com.twitter.finagle.{Httpx, Service}
 import com.twitter.util.Future
 import io.finch.argonaut._
 import io.finch.request._
-import io.finch.response.{NotFound, Ok}
+import io.finch.request.items.ParamItem
+import io.finch.response.{BadRequest, NotFound, Ok}
 import io.finch.route._
 import io.finch.{Endpoint => _, _}
 import org.restwithscala.chapter2.{scalaToTwitterFuture, _}
@@ -37,6 +39,8 @@ object FinchStep4 extends App {
         Get / matchTaskId /> GetTask :+:
         Put / matchTaskId /> UpdateTask :+:
         Get / matchTask / "search" /> SearchTasks()
+
+
 
   val taskAPI =
         Get / matchTaskId /> ( id => s"Get a single task with id: $id" ) |
@@ -120,7 +124,7 @@ object FinchStep4 extends App {
     def apply(req: Request): Future[HttpResponse] =
       for {
         task <- getRequestToTaskReader(taskId)(req)
-        stored <- TaskService.update(task)
+        stored <- TaskService.update(taskId, task)
       } yield stored match {
         case Some(task) => Ok(task.toString)
         case None => NotFound()
@@ -129,16 +133,29 @@ object FinchStep4 extends App {
 
   case class SearchTasks() extends Service[Request, HttpResponse] {
 
+    val shouldBeLowerCase = ValidationRule[String]("be lowercase") {!_.exists((c: Char) => c.isUpper) }
+
     def getSearchParams: RequestReader[SearchParams] = (
-          paramOption("status") ::
-          paramOption("text")
+          param("status") ::
+          paramOption("text").should(beLongerThan(5) and shouldBeLowerCase)
         ).as[SearchParams]
 
     def apply(req: Request): Future[HttpResponse] = {
-      for {
+      (for {
         searchParams <- getSearchParams(req)
         tasks <- TaskService.search(searchParams.status, searchParams.text)
       } yield Ok(tasks)
+        ).handle({case t: Throwable => BadRequest(errorToJson(t))})
+    }
+
+    def errorToJson(t: Throwable):Json = t match {
+
+      case NotPresent(ParamItem(param)) =>
+        Json("error" -> Json.jString("param nog found"), "param" -> Json.jString(param))
+      case NotValid(ParamItem(param), rule) =>
+        Json("error" -> Json.jString("param nog valid"), "param" -> Json.jString(param), "rule" -> Json.jString(rule))
+      case RequestErrors(errors) => Json.array(errors.map(errorToJson(_)):_*)
+      case error:Throwable => Json("error" -> Json.jString(error.toString))
     }
   }
 }

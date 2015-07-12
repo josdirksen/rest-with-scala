@@ -33,3 +33,14 @@ object DependenciesChapter2 {
 
 
 }
+
+object DependenciesChapter3 {
+  lazy val unfilteredVersion = "0.8.4"
+  val backendDeps = Seq(
+    "net.databinder" %% "unfiltered-filter" % unfilteredVersion,
+    "net.databinder" %% "unfiltered-jetty" % unfilteredVersion,
+    "net.databinder" %% "unfiltered-netty" % unfilteredVersion,
+    "net.databinder" %% "unfiltered-netty-server" % unfilteredVersion,
+    "net.databinder.dispatch" %% "dispatch-core" % "0.11.2"
+  )
+}

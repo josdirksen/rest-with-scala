@@ -41,6 +41,8 @@ object DependenciesChapter3 {
     "net.databinder" %% "unfiltered-jetty" % unfilteredVersion,
     "net.databinder" %% "unfiltered-netty" % unfilteredVersion,
     "net.databinder" %% "unfiltered-netty-server" % unfilteredVersion,
+    "net.databinder" %% "unfiltered-directives" % unfilteredVersion,
+    "no.shiplog" %% "directives2" % "0.9.2",
     "net.databinder.dispatch" %% "dispatch-core" % "0.11.2"
   )
 }

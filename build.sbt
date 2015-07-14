@@ -86,7 +86,7 @@ lazy val chapter03 = (project in file ("chapter-03"))
     fullRunTask(runCH03HelloUnfiltered, Compile, "org.restwithscala.chapter3.gettingstarted.HelloUnfiltered"),
     fullRunTask(runCH03Step1, Compile, "org.restwithscala.chapter3.steps.Step1"),
     fullRunTask(runCH03Step2, Compile, "org.restwithscala.chapter3.steps.Step2"),
-    fullRunTask(runCH03Step3, Compile, "org.restwithscala.chapter3.steps.FinchStep3"),
+    fullRunTask(runCH03Step3, Compile, "org.restwithscala.chapter3.steps.Step3"),
     fullRunTask(runCH03Step4, Compile, "org.restwithscala.chapter3.steps.FinchStep4"))
 
 //lazy val chapter03 = project in file ("chapter-03") dependsOn common

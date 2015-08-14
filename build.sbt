@@ -89,6 +89,32 @@ lazy val chapter03 = (project in file ("chapter-03"))
     fullRunTask(runCH03Step3, Compile, "org.restwithscala.chapter3.steps.Step3"),
     fullRunTask(runCH03Step4, Compile, "org.restwithscala.chapter3.steps.FinchStep4"))
 
+
+lazy val runCH04HelloScalatra = taskKey[Unit]("Run chapter 3 - Scalatra HelloWorld")
+lazy val runCH04Step1 = taskKey[Unit]("Run chapter 4 - Step1")
+lazy val runCH04Step2 = taskKey[Unit]("Run chapter 4 - Step2")
+lazy val runCH04Step3 = taskKey[Unit]("Run chapter 4 - Step3")
+
+
+addCommandAlias("runCH04-HelloScalatra", "; chapter04/runCH04HelloScalatra")
+
+addCommandAlias("runCH04-runCH04Step1", "; chapter04/runCH04Step1")
+
+addCommandAlias("runCH04-runCH04Step2", "; chapter04/runCH04Step2")
+
+addCommandAlias("runCH04-runCH04Step3", "; chapter04/runCH04Step3")
+
+
+lazy val chapter04 = (project in file ("chapter-04"))
+  .dependsOn(common)
+  .settings(commonSettings: _*)
+  .settings(name := "chapter-04",
+    libraryDependencies := DependenciesChapter4.backendDeps,
+    fullRunTask(runCH04HelloScalatra, Compile, "org.restwithscala.chapter4.gettingstarted.ScalatraRunner"),
+    fullRunTask(runCH04Step1, Compile, "org.restwithscala.chapter4.steps.ScalatraRunnerStep1"),
+    fullRunTask(runCH04Step2, Compile, "org.restwithscala.chapter4.steps.ScalatraRunnerStep2"),
+    fullRunTask(runCH04Step3, Compile, "org.restwithscala.chapter4.steps.ScalatraRunnerStep3"))
+
 //lazy val chapter03 = project in file ("chapter-03") dependsOn common
 //lazy val chapter04 = project in file ("chapter-04") dependsOn common
 //lazy val chapter05 = project in file ("chapter-05") dependsOn common

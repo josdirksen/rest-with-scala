@@ -3,7 +3,7 @@ package org.restwithscala.common.service
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
-import org.restwithscala.common.model.{Status, Note, Task}
+import org.restwithscala.common.model.{SearchParams, Status, Note, Task}
 
 import scala.collection.JavaConverters._
 import scala.concurrent._
@@ -23,6 +23,11 @@ object TaskService {
   def delete(id: Long): Future[Option[Task]] = Future { map.remove(id) }
   def select(id: Long): Future[Option[Task]] = Future { map.get(id) }
   def all: Future[List[Task]] = Future {map.values.toList}
+
+  def search(cmd: SearchParams) : Future[List[Task]] = {
+    search(cmd.status, cmd.text)
+  }
+
   def search(status: String, containsText: Option[String]) : Future[List[Task]] = {
 
     Future {

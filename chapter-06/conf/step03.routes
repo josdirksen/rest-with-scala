@@ -1,0 +1,10 @@
+POST          /tasks            controllers.Step3.createTask
+GET           /tasks            controllers.Step3.getTasks
+GET           /tasks/:id        controllers.Step3.getTask(id: Long)
+DELETE        /tasks/:id        controllers.Step3.deleteTask(id: Long)
+PUT           /tasks/:id        controllers.Step3.updateTask(id: Long, title: String, person: Option[String], status: String)
+
+GET           /*path            controllers.Step3.notImplemented(path)
+POST          /*path            controllers.Step3.notImplemented(path)
+PUT           /*path            controllers.Step3.notImplemented(path)
+DELETE        /*path            controllers.Step3.notImplemented(path)

@@ -115,10 +115,49 @@ lazy val chapter04 = (project in file ("chapter-04"))
     fullRunTask(runCH04Step2, Compile, "org.restwithscala.chapter4.steps.ScalatraRunnerStep2"),
     fullRunTask(runCH04Step3, Compile, "org.restwithscala.chapter4.steps.ScalatraRunnerStep3"))
 
-//lazy val chapter03 = project in file ("chapter-03") dependsOn common
-//lazy val chapter04 = project in file ("chapter-04") dependsOn common
-//lazy val chapter05 = project in file ("chapter-05") dependsOn common
-//lazy val chapter06 = project in file ("chapter-06") dependsOn common
-//lazy val chapter07 = project in file ("chapter-07") dependsOn common
+lazy val runCH05HelloAkkaDSL= taskKey[Unit]("Run chapter 5 - Scalatra HelloWorld")
+lazy val runCH05Step1 = taskKey[Unit]("Run chapter 5 - Step1")
+lazy val runCH05Step2 = taskKey[Unit]("Run chapter 5 - Step2")
+lazy val runCH05Step3 = taskKey[Unit]("Run chapter 5 - Step3")
+lazy val runCH05Step4 = taskKey[Unit]("Run chapter 5 - Step4")
 
 
+addCommandAlias("runCH05-HelloAkka-DSL", "; chapter05/runCH05HelloAkkaDSL")
+
+addCommandAlias("runCH05-runCH05Step1", "; chapter05/runCH05Step1")
+
+addCommandAlias("runCH05-runCH05Step2", "; chapter05/runCH05Step2")
+
+addCommandAlias("runCH05-runCH05Step3", "; chapter05/runCH05Step3")
+
+addCommandAlias("runCH05-runCH05Step4", "; chapter05/runCH05Step4")
+
+lazy val chapter05 = (project in file ("chapter-05"))
+  .dependsOn(common)
+  .settings(commonSettings: _*)
+  .settings(name := "chapter-05",
+    libraryDependencies := DependenciesChapter5.backendDeps,
+    fullRunTask(runCH05HelloAkkaDSL, Compile, "org.restwithscala.chapter5.gettingstarted.HelloDSL"),
+    fullRunTask(runCH05Step1, Compile, "org.restwithscala.chapter5.steps.AkkaHttpDSLStep1"),
+    fullRunTask(runCH05Step2, Compile, "org.restwithscala.chapter5.steps.AkkaHttpDSLStep2"),
+    fullRunTask(runCH05Step3, Compile, "org.restwithscala.chapter5.steps.AkkaHttpDSLStep3"),
+    fullRunTask(runCH05Step4, Compile, "org.restwithscala.chapter5.steps.AkkaHttpDSLStep4"))
+
+addCommandAlias("runCH06-HelloPlay", "; chapter06/run -Dhttp.port=8080  -Dplay.http.router=hello.Routes")
+
+addCommandAlias("runCH06-runCH06Step1", "; chapter06/run -Dhttp.port=8080  -Dplay.http.router=step01.Routes")
+
+addCommandAlias("runCH06-runCH06Step2", "; chapter06/run -Dhttp.port=8080  -Dplay.http.router=step02.Routes")
+
+addCommandAlias("runCH06-runCH06Step3", "; chapter06/run -Dhttp.port=8080  -Dplay.http.router=step03.Routes -Dplay.http.errorHandler=controllers.ErrorHandler")
+
+import PlayKeys._
+lazy val chapter06 = (project in file ("chapter-06"))
+  .enablePlugins(PlayScala)
+  .dependsOn(common)
+  .settings(commonSettings: _*)
+  .settings(
+    devSettings := Seq("play.server.http.port" -> "8000"),
+    name := "chapter-06",
+    libraryDependencies := DependenciesChapter6.backendDeps
+  )

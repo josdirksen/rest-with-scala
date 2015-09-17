@@ -1,0 +1,1 @@
+GET     /hello                       controllers.Hello.helloWorld

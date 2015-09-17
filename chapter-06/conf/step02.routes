@@ -1,0 +1,11 @@
+#this is a comment
+POST          /tasks            controllers.Step2.createTask(title: String, person: Option[String], status: String ?= "new")
+GET           /tasks            controllers.Step2.getTasks
+GET           /tasks/:id        controllers.Step2.getTask(id: Long)
+DELETE        /tasks/:id        controllers.Step2.deleteTask(id: Long)
+PUT           /tasks/:id        controllers.Step2.updateTask(id: Long, title: String, person: Option[String], status: String ?= "updated")
+
+GET           /*path            controllers.Step2.notImplemented(path)
+POST          /*path            controllers.Step2.notImplemented(path)
+PUT           /*path            controllers.Step2.notImplemented(path)
+DELETE        /*path            controllers.Step2.notImplemented(path)

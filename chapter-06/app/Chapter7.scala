@@ -17,23 +17,21 @@ import play.api.http.DefaultHttpErrorHandler
 import play.api._
 import play.api.mvc.Results._
 import play.api.routing.Router
+import play.api.mvc.BodyParsers.parse
 
-class ErrorHandler @Inject() (env: Environment,
-                              config: Configuration,
-                              sourceMapper: OptionalSourceMapper,
-                              router: Provider[Router]
-                              ) extends DefaultHttpErrorHandler(env, config, sourceMapper, router) {
 
-  override def onDevServerError(request: RequestHeader, exception: UsefulException) = {
-    Future.successful(
-      InternalServerError("A server error occurred: " + exception.getMessage)
-    )
-  }
 
-  override def onProdServerError(request: RequestHeader, exception: UsefulException) = {
-    Future.successful(
-      InternalServerError("A server error occurred: " + exception.getMessage)
-    )
+object MediaTypeAction extends ActionBuilder[Request] {
+
+  val MediaType = "application/vnd.restwithscala.task+json"
+
+  def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
+    request.headers.get("Content-Type") match  {
+      case Some(MediaType) => {
+          block(new WrappedRequest[A](request))
+      }
+      case _ => Future{BadRequest("Unsupported mimetype")}
+    }
   }
 }
 
@@ -43,7 +41,7 @@ class ErrorHandler @Inject() (env: Environment,
  * - working with JSON
  * - custom error handler
  */
-object Step3 extends Controller {
+object Chapter7 extends Controller {
 
   // we use format, since our read and writes are symmetrical
   // this doesn't work for one parameter case classes
@@ -90,20 +88,14 @@ object Step3 extends Controller {
   implicit def wTask: Writeable[Task] = Writeable(_.toString.getBytes, Some("application/txt"))
   implicit def wListTask: Writeable[List[Task]] = Writeable(b => Json.prettyPrint(Json.toJson(b)).getBytes, Some("application/json"))
 
-  def createTask = Action.async { request =>
+  def createTask = MediaTypeAction.async((parse.tolerantJson)) { request =>
 
-    val body: Option[JsResult[Task]] = request.body.asJson.map(_.validate[Task])
-//    val body: Option[Task] = request.body.asJson.map(_.validate[Task])
+    val body = request.body.validate[Task]
 
     // option defines whether we have a json body or not.
     body match {
-      case Some(task) =>
-        // jsResult defines whether we have failures.
-        task match {
-          case JsSuccess(task, _) => TaskService.insert(task).map(b => Ok(Json.toJson(b)))
-          case JsError(errors) => Future{BadRequest(errors.mkString("\n"))}
-        }
-      case None => Future{BadRequest("Body can't be parsed to JSON")}
+        case JsSuccess(task, _) => TaskService.insert(task).map(b => Ok(Json.toJson(b)).as(MediaTypeAction.MediaType))
+        case JsError(errors) => Future{BadRequest(errors.mkString("\n"))}
     }
   }
 

@@ -83,3 +83,15 @@ object DependenciesChapter6 {
     "com.typesafe.play" %% "play-docs" % playVersion
   )
 }
+
+object DependenciesChapter7 {
+
+  val backendDeps = Seq (
+    "io.argonaut" %% "argonaut" % "6.0.4",
+    "org.json4s" %% "json4s-native" % "3.2.10",
+    "io.spray" %%  "spray-json" % "1.3.2",
+    "com.typesafe.play" %% "play-json" % "2.4.0"
+  )
+
+  val resolvers = Seq("Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
+}

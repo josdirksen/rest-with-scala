@@ -1,10 +1,8 @@
 package org.restwithscala.chapter2.steps
 
-import org.restwithscala.common.model.{SearchParams, Task}
-import org.restwithscala.common.service.TaskService
-import _root_.argonaut.Json
+import argonaut.Json
 import com.twitter.finagle.httpx.Request
-import com.twitter.finagle.{Httpx, Service}
+import com.twitter.finagle.{Httpx, Service, SimpleFilter}
 import com.twitter.util.Future
 import io.finch.argonaut._
 import io.finch.request._
@@ -12,9 +10,10 @@ import io.finch.request.items.ParamItem
 import io.finch.response.{BadRequest, NotFound, Ok}
 import io.finch.route._
 import io.finch.{Endpoint => _, _}
+import org.restwithscala.common.model.{SearchParams, Task}
+import org.restwithscala.common.service.TaskService
 import org.restwithscala.chapter2.{scalaToTwitterFuture, _}
 
-import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -26,7 +25,28 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * We use implicit conversions from scala future to twitter future to work with the
  * TaskService.
  */
-object FinchStep4 extends App {
+object FinchChapter7 extends App {
+
+  // Define a filter on mediatype so we can check whether the client
+  // sends the correct mediatype.
+  val MediaType = "application/vnd.restwithscala.task+json"
+  val filter = new SimpleFilter[HttpRequest, HttpResponse] {
+    def apply(req: HttpRequest, service: Service[Request, HttpResponse]): Future[HttpResponse] = {
+      req.contentType match {
+        case Some(MediaType) => service.apply(req).map({ resp =>
+          resp.setContentType(MediaType, "UTF-8")
+          resp
+        })
+        case Some(_) => Future{BadRequest(s"Media type not understood, use $MediaType")}
+        case None => Future{BadRequest(s"Media type not present, use $MediaType")}
+      }
+    }
+  }
+
+  val matchTaskFilter: Matcher = "tasksFilter"
+  val createTask = CreateNewTask()
+  val createNewTaskFilter = filter andThen createTask
+
 
   val matchTask: Matcher = "tasks"
   val matchTaskId = matchTask / long
@@ -34,12 +54,11 @@ object FinchStep4 extends App {
   // handle a single post using a RequestReader
   val taskCreateAPI =
         Get / matchTask /> GetAllTasks() :+:
-       Post / matchTask /> CreateNewTask() :+:
+       Post / matchTaskFilter /> createNewTaskFilter :+:
      Delete / matchTaskId /> DeleteTask :+:
         Get / matchTaskId /> GetTask :+:
         Put / matchTaskId /> UpdateTask :+:
         Get / matchTask / "search" /> SearchTasks()
-
 
 
   val taskAPI =
@@ -90,7 +109,7 @@ object FinchStep4 extends App {
      */
     def apply(req: Request): Future[HttpResponse] = {
 
-//      req.contentType
+      //      req.contentType
 
       for {
         task <- getRequestToTaskReader(-1)(req)

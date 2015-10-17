@@ -65,7 +65,7 @@ object FinchStep2 extends App {
       ( RequestReader.value(id) ::                       // generate a new id
         param("title") ::                                 // use req. param title as title
         body ::                                           // use the body as content
-        RequestReader.value(None:Option[Person]) ::       // default not assigned
+        RequestReader.value(Option.empty[Person]) ::       // default not assigned
         RequestReader.value(List.empty[Note]) ::          // no notes initially
         RequestReader.value(Status(""))                   // use status parameter as status
         ).as[Task]                                        // finally return a task

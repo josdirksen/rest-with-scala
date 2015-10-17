@@ -1,6 +1,1 @@
-{
-  "id": "462d9644-3c86-ceeb-3ba0-97ad8abd74f0",
-  "name": "Chapter 01",
-  "timestamp": 1434098026839,
-  "requests": []
-}
+{"id":"9343c6a3-148d-993c-456f-59da4ac65dcc","name":"Chapter 01","timestamp":1434098026839,"requests":[{"collectionId":"9343c6a3-148d-993c-456f-59da4ac65dcc","id":"1f3b9d2b-5311-828b-3094-7b82ab394a78","name":"Echo 'hello'","description":"","url":"http://localhost:8080/hello/world/123","method":"GET","headers":"","data":[],"dataMode":"params","timestamp":0,"version":2,"time":1434287124734},{"collectionId":"9343c6a3-148d-993c-456f-59da4ac65dcc","id":"8fd25fc9-45ef-810c-ce65-70e69f9c5c17","name":"Request unknown URL","description":"","url":"http://localhost:8080/unknown","method":"GET","headers":"","data":[],"dataMode":"params","timestamp":0,"responses":[],"version":2},{"collectionId":"9343c6a3-148d-993c-456f-59da4ac65dcc","id":"a77c0ffb-adee-d4a9-c677-0ba3c8a411ab","name":"Echo without parameter","description":"","url":"http://localhost:8080/echo","method":"GET","headers":"","data":[],"dataMode":"params","timestamp":0,"responses":[],"version":2}]}

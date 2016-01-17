@@ -3,7 +3,8 @@ import sbt._
 lazy val commonSettings = Seq(
   organization := "org.restwithscala",
   version := "0.1.0",
-  scalaVersion := "2.11.6"
+  scalaVersion := "2.11.6",
+  checksums in update := Nil
 )
 
 lazy val common = (project in file ("common"))
